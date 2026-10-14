@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Peças</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Topo: título e abas principais -->
+  <header class="topo">
+    <div class="topo-conteudo">
+      <div>
+        <p class="sobre-titulo">ORÇAMENTOS E COTAÇÕES</p>
+        <h1>Calculadora de Peças</h1>
+        <p class="subtitulo">Compare fornecedores e monte a melhor compra.</p>
+      </div>
+    </div>
+    <nav class="abas" id="abas-principais">
+      <button type="button" class="aba" data-aba="orcamento">Orçamento</button>
+      <button type="button" class="aba" data-aba="tipos">Tipos de peça</button>
+      <button type="button" class="aba" data-aba="fornecedores">Fornecedores</button>
+      <button type="button" class="aba" data-aba="margens">Margens</button>
+    </nav>
+  </header>
+
+  <main class="conteudo">
+
+    <!-- ===== ABA: ORÇAMENTO ===== -->
+    <section id="secao-orcamento" class="secao">
+      <div class="cartao">
+        <h2>Peças do orçamento</h2>
+        <form id="form-peca" class="linha-form">
+          <label class="campo crescer">
+            <span>Nome da peça</span>
+            <input id="peca-nome" maxlength="200" placeholder="Ex.: Pastilha de freio dianteira" required>
+          </label>
+          <label class="campo">
+            <span>Tipo</span>
+            <select id="peca-tipo" required></select>
+          </label>
+          <label class="campo pequeno">
+            <span>Qtd</span>
+            <input id="peca-qtd" type="number" min="1" step="1" value="1" required>
+          </label>
+          <label class="campo">
+            <span>Fornecedor</span>
+            <select id="peca-fornecedor"></select>
+          </label>
+          <label class="campo">
+            <span>Custo unitário (R$)</span>
+            <input id="peca-custo" type="number" min="0.01" step="0.01" placeholder="Opcional">
+          </label>
+          <button type="submit" class="botao">Adicionar peça</button>
+        </form>
+        <div id="lista-pecas"></div>
+      </div>
+
+      <div class="cartao">
+        <details class="cotacao-extra">
+          <summary>Adicionar outra cotação</summary>
+          <p class="dica">Use para registrar o preço da mesma peça em outro fornecedor. Se já houver uma cotação desse fornecedor, o novo valor a substituirá.</p>
+          <form id="form-custo" class="linha-form">
+            <label class="campo crescer">
+              <span>Peça</span>
+              <select id="custo-peca" required></select>
+            </label>
+            <label class="campo crescer">
+              <span>Fornecedor</span>
+              <select id="custo-fornecedor" required></select>
+            </label>
+            <label class="campo">
+              <span>Custo unitário (R$)</span>
+              <input id="custo-valor" type="number" min="0.01" step="0.01" placeholder="Ex.: 125,90" required>
+            </label>
+            <button type="submit" class="botao">Salvar cotação</button>
+          </form>
+        </details>
+      </div>
+
+      <div class="cartao">
+        <h2>Comparar cotações e montar compra</h2>
+        <div id="conteudo-comparacao"></div>
+      </div>
+    </section>
+
+    <!-- ===== ABA: TIPOS DE PEÇA ===== -->
+    <section id="secao-tipos" class="secao" hidden>
+      <div class="cartao">
+        <h2>Tipos de peça</h2>
+        <form id="form-tipo" class="linha-form">
+          <label class="campo crescer">
+            <span>Novo tipo</span>
+            <input id="tipo-nome" maxlength="200" placeholder="Ex.: Arrefecimento" required>
+          </label>
+          <button type="submit" class="botao">Adicionar tipo</button>
+        </form>
+        <div id="lista-tipos"></div>
+      </div>
+    </section>
+
+    <!-- ===== ABA: FORNECEDORES ===== -->
+    <section id="secao-fornecedores" class="secao" hidden>
+      <div class="cartao">
+        <h2>Fornecedores e frete</h2>
+        <form id="form-fornecedor" class="linha-form">
+          <label class="campo crescer">
+            <span>Nome</span>
+            <input id="fornecedor-nome" maxlength="200" placeholder="Ex.: Distribuidora Central" required>
+          </label>
+          <label class="campo">
+            <span>Frete (R$)</span>
+            <input id="fornecedor-frete" type="number" min="0" step="0.01" value="0">
+          </label>
+          <label class="campo">
+            <span>Prazo de entrega (dias)</span>
+            <input id="fornecedor-prazo" type="number" min="0" step="1" placeholder="Ex.: 3">
+          </label>
+          <label class="campo">
+            <span>Grátis acima de (R$)</span>
+            <input id="fornecedor-gratis" type="number" min="0" step="0.01" value="0">
+          </label>
+          <button type="submit" class="botao">Adicionar fornecedor</button>
+        </form>
+        <p class="dica">"Grátis acima de" = 0 significa que esse fornecedor nunca dá frete grátis. O prazo de entrega é opcional.</p>
+        <div id="lista-fornecedores"></div>
+      </div>
+      <div class="cartao">
+        <h2>Backup dos dados</h2>
+        <p class="dica">Os dados ficam neste navegador e não são criptografados. O backup contém custos e informações de fornecedores; guarde o arquivo em local protegido. Importar um backup substitui os dados atuais.</p>
+        <div class="linha-form">
+          <button type="button" class="botao secundario" data-acao="exportar-backup">Baixar backup</button>
+          <label class="campo crescer">
+            <span>Restaurar de um arquivo de backup</span>
+            <input id="arquivo-backup" type="file" accept="application/json,.json">
+          </label>
+          <button type="button" class="botao perigo" data-acao="importar-backup">Restaurar backup</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABA: MARGENS ===== -->
+    <section id="secao-margens" class="secao" hidden>
+      <div id="conteudo-margens"></div>
+    </section>
+
+  </main>
+
+  <!-- Mensagem rápida que aparece embaixo (ex.: "Copiado!") -->
+  <div id="aviso" class="aviso" role="status" aria-live="polite" hidden></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
