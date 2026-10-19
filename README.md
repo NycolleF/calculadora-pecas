@@ -2,6 +2,8 @@
 
 Ferramenta para montar orçamentos de peças automotivas comparando fornecedores. Criada a partir de uma necessidade real do meu dia a dia no atendimento de uma oficina mecânica: cotar a mesma peça em vários lugares e descobrir qual compra sai mais em conta, já contando o frete.
 
+**[Testar online](https://nycollef.github.io/calculadora-pecas/)**
+
 ## Funcionalidades
 
 - **Orçamento:** cadastro das peças com tipo, quantidade, fornecedor e custo unitário
